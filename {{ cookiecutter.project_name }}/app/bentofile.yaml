@@ -1,0 +1,134 @@
+### File used as argument in `bentoml build -f bentofile.yaml` to build a bento.
+### For more details see https://docs.bentoml.org/en/latest/concepts/bento.html
+### and https://docs.bentoml.org/en/latest/guides/containerization.html for advanced customization.
+
+# service is a required field which specifies where the bentoml.Service object is defined.
+# `service` refers to the Python module (the service.py file)
+# `svc` refers to the bentoml.Service object created in service.py, with svc = bentoml.Service(...)
+service: service:svc
+
+# description field allows user to customize documentation for any given Bento.
+# The description contents must be plain text, optionally in Markdown format.
+# Description can be specified either inline in the bentofile.yaml, or via a file path to an existing text file:
+description: "file: openAPI.md"
+
+# labels are key-value pairs that are attached to an object.
+labels:
+  owner: owner
+  stage: none
+
+# Includes every files under build_ctx.
+include:
+  - service.py
+  - models
+
+# exclude field specifies the pathspecs (similar to .gitignore files) of files to be excluded in the final Bento build.
+# The pathspecs are relative to the build_ctx directory.
+# Users can also opt to place a .bentoignore file in the build_ctx directory.
+exclude:
+  # - "tests/"
+  # - "secrets.key"
+
+# https://docs.bentoml.org/en/latest/concepts/bento.html#docker-options
+# docker:
+# The OS distribution on the Docker image, Default to debian.
+# see https://docs.bentoml.org/en/latest/concepts/bento.html#os-distros
+# distro: debian
+
+# Specify which python to include on the Docker image [3.7, 3.8, 3.9, 3.10]. Default to the Python version in build environment.
+# python_version: "3.8.12"
+
+# Specify the cuda version to install on the Docker image [11.6.2].
+# see https://docs.bentoml.org/en/latest/concepts/bento.html#gpu-support
+# cuda_version: "11.6.2"
+
+# system_packages:
+#   - libblas-dev
+#   - liblapack-dev
+#   - gfortran
+
+# Declare environment variables in the generated Dockerfile.
+# env:
+# - FOO=value1
+# - BAR=value2
+
+# A python or shell script that executes during docker build time.
+# see https://docs.bentoml.org/en/latest/concepts/bento.html#setup-script
+# setup_script: "setup.py"
+
+# A user-provided docker base image. This will override all other custom attributes of the image.
+# see https://docs.bentoml.org/en/latest/guides/containerization.html#custom-base-image
+# base_image: my_custom_image:latest
+
+# Customize the generated dockerfile by providing a Jinja2 template that extends the default dockerfile.
+# see https://docs.bentoml.org/en/latest/guides/containerization.html#dockerfile-template
+# dockerfile_template: Dockerfile.template
+
+python:
+  # Packages to include in this bento.
+  # When a package name is left without a version, BentoML will lock the package to the version available
+  # under the current environment when running bentoml build.
+  # User can also specify the desired version, install from a custom PyPI source, or install from a GitHub repo.
+  packages:
+    - scikit-learn==1.2.0
+    - pandas==1.5.2
+    - mlem==0.4.5
+  #   - "package>=0.2,<0.3"
+  #   - "torchvision==0.9.2 --extra-index-url https://download.pytorch.org/whl/lts/1.8/cpu"
+  #   - "git+https://github.com/username/mylib.git@main"
+
+  # Whether to lock the packages or not.
+  # By default, BentoML automatically locks all package versions, as well as all packages in their dependency graph,
+  # to the version found in the current build environment, and generates a requirements.lock.txt file.
+  # This process uses pip-compile under the hood.
+  # If you have already specified a version for all packages, you can optionally disable this behavior by setting the lock_packages field to False
+  # lock_packages: true
+
+  # The path to a custom requirements.txt file.
+  # If you already have a requirements.txt file that defines python packages for your project,
+  # you may also supply a path to the requirements.txt file directly
+  # requirements_txt: requirements.txt
+
+  # Inputs for the --index-url pip argument.
+  # index_url: "https://my.mirror.com/simple"
+
+  # Whether to include the --no-index pip argument.
+  # no_index: False
+
+  # List of trusted hosts used as inputs using the --trusted-host pip argument.
+  # trusted_host:
+  #   - "pypi.python.org"
+  #   - "my.mirror.com"
+
+  # List of links to find as inputs using the --find-links pip argument.
+  # find_links:
+  #   - "https://download.pytorch.org/whl/cu80/stable.html"
+
+  # List of extra index urls as inputs using the ≈ pip argument.
+  # extra_index_url:
+  #   - "https://<other api token>:@my.mirror.com/pypi/simple"
+  #   - "https://pypi.python.org/simple"
+
+  # Any additional pip arguments that you would like to add when installing a package
+  # pip_args: "--pre -U --force-reinstall"
+
+  # List of paths to wheels to include in the bento
+  # Python .whl files are also supported as a type of dependency to include in a Bento.
+  # Simply provide a path to your .whl files under the wheels` field.
+  # wheels:
+  #   - ./lib/my_package.whl
+# conda:
+# Path to a conda environment file to copy into the bento.
+# If specified, this file will overwrite any additional option specified.
+# environment_yml: "./environment.yml"
+
+# Custom conda channels to use. If not specified will use conda-forge.
+# channels:
+#   - default
+
+# Custom conda dependencies to include in the environment.
+# dependencies:
+#   - h2o
+# The specific pip conda dependencies to include.
+# pip:
+#   - "scikit-learn==1.2.0"

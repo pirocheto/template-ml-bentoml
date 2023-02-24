@@ -1,0 +1,21 @@
+[flake8]
+max-line-length = 119
+max-complexity = 10
+exclude =
+    .git,
+    __pycache__,
+extend-ignore =
+    # Missing docstring in public module
+    D100,
+    # No blank lines allowed after function docstring
+    D202,
+    # Missing docstring in public function
+    D103,
+    # Missing docstring in public class
+    D101,
+    # Missing docstring in public method
+    D102,
+    # Missing docstring in __init__
+    D107,
+    # Missing docstring in public package
+    D104,

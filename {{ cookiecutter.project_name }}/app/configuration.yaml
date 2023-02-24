@@ -1,0 +1,141 @@
+### BentoML provides a configuration interface that allows you to customize the runtime behaviour of your BentoService.
+### Note: For most use cases, users should not need to change this file.
+### https://docs.bentoml.org/en/latest/guides/configuration.html
+
+# The version of the configuration file.
+# This is used to determine the compatibility of the configuration file with the current BentoML version.
+version: 1
+
+# Configuration for BentoML API server.
+api_server:
+  # Number of API workers for to spawn
+  workers: null
+
+  # Timeout for API server in seconds
+  timeout: 60
+
+  # Maximum number of connections to hold in backlog
+  backlog: 2048
+
+  # Key and values to enable metrics feature
+  # https://docs.bentoml.org/en/latest/guides/configuration.html#metrics
+  metrics:
+
+    # Enable metrics feature
+    enabled: true
+
+    # Namespace for metrics
+    # Following labeling convention set by Prometheus, metrics generated
+    # by BentoML API server components will have namespace bentoml_api_server
+    namespace: bentoml_api_server
+
+
+    # duration:
+      # Duration buckets for Histogram.
+      # buckets: [0.1, 0.2, 0.5, 1, 2, 5, 10]
+
+      # Lower bound for exponential buckets
+      # min: 0.1
+
+      # Upper bound for exponential buckets
+      # max: 10
+
+      # Factor for exponential buckets
+      # factor: 1.2
+
+  # Key and values to enable logging feature
+  # https://docs.bentoml.org/en/latest/guides/logging.html#logging-configuration
+  logging:
+    access:
+      enabled: true
+      # Whether to log the size of the request body
+      request_content_length: true
+      # Whether to log the content type of the request
+      request_content_type: true
+      # Whether to log the content length of the response
+      response_content_length: true
+      # Whether to log the content type of the response
+      response_content_type: true
+      # The format of the Trace and Span IDs in the access logs
+      format:
+        trace_id: 032x
+        span_id: 016x
+
+  # Key and values to configure HTTP API server
+  # https://docs.bentoml.org/en/latest/guides/configuration.html#http
+  http:
+    # By default, BentoML will start an HTTP API server on port 3000.
+    # To change the port, set api_server.http.port:
+    port: 3000
+
+    # Cors configuration. By default CORS is disabled.
+    # cors:
+      # enabled: true
+      # allow_origin: ["myorg.com"]
+      # allow_methods: ["GET", "OPTIONS", "POST", "HEAD", "PUT"]
+      # allow_credentials: true
+      # allow_headers: "*"
+      # allow_origin_regex: 'https://.*\.my_org\.com'
+      # max_age: 1200
+      # expose_headers: ["Content-Length"]
+
+  # Key and values to configure gRPC API server
+  # https://docs.bentoml.org/en/latest/guides/configuration.html#grpc
+  # grpc:
+    # Similar to HTTP API server, BentoML will start a gRPC API server on port 3000 by default.
+    # To change the port, set api_server.grpc.port:
+    # port: 3000
+
+    # Note that when using bentoml serve-grpc and metrics is enabled,
+    # a Prometheus metrics server will be started as a sidecar on port 3001.
+    # To change the port, set api_server.grpc.metrics.port.
+    # metrics:
+      # port: 3001
+
+    # To always enable server reflection, set api_server.grpc.reflection.enabled to true:
+    # reflection:
+      # enabled: false
+
+  # Key and values to configure SSL
+  # BentoML supports SSL/TLS for both HTTP and gRPC API server.
+  # To enable SSL/TLS, set api_server.ssl.enabled to true.
+  # https://docs.bentoml.org/en/latest/guides/configuration.html#ssl
+  # ssl:
+    # enabled: false
+
+  # Key and values to configure tracing exporter for API server.
+  # https://docs.bentoml.org/en/latest/guides/tracing.html
+  # tracing:
+    # Exporter type. allowed values are jaeger, zipkin and otlp
+    # exporter_type: jaeger
+    # By default, no traces will be collected. Set sample_rate to your desired fraction in order to start collecting them
+    # sample_rate: 1.0
+
+# https://docs.bentoml.org/en/latest/guides/monitoring.html
+monitoring:
+  enabled: true
+  type: default
+  options:
+    log_path: /var/log
+
+
+# runners:
+  # runner_1:
+
+    # https://docs.bentoml.org/en/latest/concepts/runner.html#timeout
+    # timeout: 60
+
+    # https://docs.bentoml.org/en/latest/guides/batching.html
+    # batching:
+      # enabled: true
+
+      # Max batch size represents the maximum size a batch can reach before releasing for inferencing.
+      # Max batch size should be set based on the capacity of the available system resources, e.g. memory or GPU memory.
+      # max_batch_size: 100
+
+      # Max latency represents the maximum latency in milliseconds that a batch should wait before releasing for inferencing.
+      # Max latency should be set based on the service level objective (SLO) of the inference requests.
+      # max_latency_ms: 500
+
+    # resources:
+      # nvidia.com/gpu: [0, 2]
