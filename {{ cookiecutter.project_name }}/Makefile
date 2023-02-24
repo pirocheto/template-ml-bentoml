@@ -38,10 +38,21 @@ install-poetry:
 install:
 	poetry install --no-root
 
+# Initialize git
+.PHONY: git
+git:
+	git init
+
 # Install pre-commit hook
 .PHONY: pre-commit
 pre-commit:
 	pre-commit install
+
+# Initialize project
+.PHONY: init
+init: install git pre-commit
+	git add --all
+	git commit -m "init"
 
 #################################################################################
 # PROJECT COMMANDS                                                              #
