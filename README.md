@@ -24,6 +24,8 @@ If you need, you can find the installation instructions [here](https://cookiecut
 
 ### Usage
 
+![demo](./img/demo.gif)
+
 1. Run cookiecutter to generate the project.
    ```bash
    cookiecutter https://github.com/pirocheto/template-ml-bentoml
