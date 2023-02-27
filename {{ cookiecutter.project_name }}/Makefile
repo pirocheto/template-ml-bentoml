@@ -38,21 +38,10 @@ install-poetry:
 install:
 	poetry install --no-root
 
-# Initialize git
-.PHONY: git
-git:
-	git init
-
 # Install pre-commit hook
 .PHONY: pre-commit
 pre-commit:
 	pre-commit install
-
-# Initialize project
-.PHONY: init
-init: install git pre-commit
-	git add --all
-	git commit -m "init"
 
 #################################################################################
 # PROJECT COMMANDS                                                              #
@@ -72,7 +61,7 @@ load-model:
 .ONESHELL:
 build-bento:
 	cd app
-	bentoml build -f ./bentofile.yaml
+	bentoml build
 
 # See https://docs.bentoml.org/en/latest/reference/cli.html#bentoml-serve
 .PHONY: serve
@@ -108,3 +97,12 @@ start-app:
 # Run end-to-end application deployment
 .PHONY: e2e
 e2e: load-model build-app start-app
+
+
+.PHONY: tests
+tests:
+	rm .coverage
+	cd app && bentoml serve service:svc -p 3005 &
+	coverage run --source=app -m pytest .
+	kill -9 `lsof -i:3005 -t`
+	coverage report -m
