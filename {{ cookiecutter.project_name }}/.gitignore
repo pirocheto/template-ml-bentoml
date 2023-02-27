@@ -91,4 +91,4 @@ target/
 .pytest_cache/
 
 # bentoml log
-log/
+monitoring/
