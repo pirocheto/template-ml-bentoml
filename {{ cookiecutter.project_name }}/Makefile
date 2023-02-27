@@ -49,7 +49,7 @@ pre-commit:
 
 # Load model from an MLEM project
 # See https://mlem.ai/doc/command-reference/clone/
-.PHONY: build-bento
+.PHONY: load-model
 load-model:
 	mlem clone \
 	--project $(MODEL_REPOSITORY) \
@@ -90,7 +90,7 @@ build-app: build-bento build-container
 start-app:
 	docker run -it --rm -p 3005:3000 \
 	-v $(PWD)/app/configuration.yaml:/home/bentoml/configuration.yaml \
-	-v $(PWD)/app/log:/var/log \
+	-v $(PWD)/app/monitoring:/var/log \
 	-e BENTOML_CONFIG=/home/bentoml/configuration.yaml \
 	$(BENTO_IMAGE_TAG)
 
@@ -101,6 +101,7 @@ e2e: load-model build-app start-app
 
 .PHONY: tests
 tests:
+	[ ! -d "app/models" ] && $(MAKE) load-model
 	rm .coverage
 	cd app && bentoml serve service:svc -p 3005 &
 	coverage run --source=app -m pytest .
