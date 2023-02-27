@@ -20,7 +20,7 @@ poetry --version
 To install it:
 
 ```bash
-make install_poetry
+make install-poetry
 ```
 
 or go [here](https://python-poetry.org/docs/#installing-with-the-official-installer) to see all installation options.
