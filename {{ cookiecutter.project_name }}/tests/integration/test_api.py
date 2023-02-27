@@ -32,27 +32,32 @@ def session():
         raise TimeoutError(f"API hosted on '{URL}' is not ready")
 
 
-def test_healthz(session):
+@pytest.mark.usefixtures("session")
+def test_healthz():
     resp = requests.get(URL + "/healthz", timeout=5)
     assert resp.status_code == 200
 
 
-def test_livez(session):
+@pytest.mark.usefixtures("session")
+def test_livez():
     resp = requests.get(URL + "/livez", timeout=5)
     assert resp.status_code == 200
 
 
-def test_readyz(session):
+@pytest.mark.usefixtures("session")
+def test_readyz():
     resp = requests.get(URL + "/readyz", timeout=5)
     assert resp.status_code == 200
 
 
-def test_metrics(session):
+@pytest.mark.usefixtures("session")
+def test_metrics():
     resp = requests.get(URL + "/metrics", timeout=5)
     assert resp.status_code == 200
 
 
-def test_classify(session):
+@pytest.mark.usefixtures("session")
+def test_classify():
     input_data = {
         "features": [
             {

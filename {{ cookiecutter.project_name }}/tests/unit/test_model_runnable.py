@@ -2,8 +2,6 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import pytest
-from mlem.api import clone
 from sklearn.base import BaseEstimator
 
 from app.service import ModelRunnable
@@ -14,22 +12,12 @@ PROJECT_DIR = Path(__file__).parents[2] / "app"
 MODEL_PATH = PROJECT_DIR / "models/rf"
 
 
-@pytest.fixture(scope="module")
-def load_model():
-    yield clone(
-        project="https://github.com/iterative/example-mlem-get-started",
-        rev="main",
-        path="models/rf",
-        target="app/models/rf",
-    )
-
-
-def test_model_runnable_initialization(load_model):
+def test_model_runnable_initialization():
     model_runnable = ModelRunnable(MODEL_PATH)
     assert isinstance(model_runnable._model, BaseEstimator)  # pylint: disable=protected-access
 
 
-def test_model_runnable_predict(load_model):
+def test_model_runnable_predict():
     model_runnable = ModelRunnable(MODEL_PATH)
     input_data = pd.DataFrame(
         [
